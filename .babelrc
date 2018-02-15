@@ -1,0 +1,16 @@
+
+{
+ "presets": ["react-native", "react-native-stage-0/decorator-support"],
+ "plugins": [[
+ 	"module-resolver", {
+      "root": ["./"],
+      "alias": {
+      	"app": "./src",
+        "ui": "./src/ui",
+        "utils": "./src/utils",
+        "components": "./src/components",
+        "images": "./src/assets/images"
+      }
+    }
+ ]],
+}
