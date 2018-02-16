@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { inject, observer } from 'mobx-react/native';
 import {
     View,
     Text,
@@ -10,8 +11,15 @@ import {
 
 import classes from './classes';
 
+@inject(stores => ({
+    isLogin: stores.me.isLogin,
+    user: stores.me.data,
+}))
+@observer
 export default class Menu extends Component {
     render() {
+        var { isLogin, user } = this.props;
+
         return (
             <View style={classes.container}>
                 <TouchableOpacity
@@ -99,7 +107,17 @@ export default class Menu extends Component {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={classes.item}>
+                    <TouchableOpacity
+                        style={classes.item}
+                        onPress={e => {
+                            this.props.navigator.push({
+                                screen: 'zzyzx.Stars',
+                                navigatorStyle: {
+                                    navBarHidden: true,
+                                },
+                            });
+                        }}
+                    >
                         <View style={classes.shadow}>
                             <Image {...{
                                 resizeMode: 'cover',
@@ -117,7 +135,33 @@ export default class Menu extends Component {
                     </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={classes.profile}>
+                <TouchableOpacity
+                    style={classes.profile}
+                    onPress={e => {
+                        if (isLogin()) {
+                            this.props.navigator.push({
+                                screen: 'zzyzx.User',
+                                navigatorStyle: {
+                                    navBarHidden: true,
+                                },
+                                passProps: {
+                                    params: {
+                                        id: user.id
+                                    }
+                                }
+                            });
+                            return;
+                        }
+
+                        // Login
+                        this.props.navigator.showModal({
+                            screen: 'zzyzx.Login',
+                            navigatorStyle: {
+                                navBarHidden: true,
+                            },
+                        });
+                    }}
+                >
                     <View style={classes.shadow}>
                         <Image {...{
                             resizeMode: 'cover',

@@ -5,12 +5,11 @@ import {
     View,
     Text,
     TouchableOpacity,
-    ScrollView,
 } from 'react-native';
 
 import classes from './classes';
 import Header from 'components/Header';
-import VideoList from 'components/VideoList';
+import List from 'components/VideoList';
 
 @inject(stores => ({
     loading: stores.mostwanted.loading,
@@ -31,34 +30,12 @@ export default class MostWanted extends Component {
         this.props.getList(1, type);
     }
 
-    reset() {
-        // Reset offset Y
-        this.refs.scoller.scrollTo({y: 0, animated: true});
-        this.lastOffsetY = 0;
-        this.setState({
-            hideHeader: false,
-        });
-    }
-
-    toggleHeader(nativeEvent) {
-        var { contentOffset, layoutMeasurement } = nativeEvent;
-
-        if (contentOffset.y < layoutMeasurement.height
-            || !this.lastOffsetY) {
+    toggleHeader(hideHeader) {
+        if (hideHeader !== this.state.hideHeader) {
             this.setState({
-                hideHeader: false,
+                hideHeader,
             });
-            this.lastOffsetY = contentOffset.y;
-            return;
         }
-
-        // Toggle header, scroll down hide the header, scroll up show the header
-        this.setState({
-            hideHeader: contentOffset.y > this.lastOffsetY,
-        });
-
-        // Keep the recent offset
-        this.lastOffsetY = contentOffset.y;
     }
 
     state = {
@@ -128,26 +105,17 @@ export default class MostWanted extends Component {
                     </View>
                 </View>
 
-                <ScrollView
-                    ref="scoller"
-                    onScrollEndDrag={e => {
-                        var { contentOffset, contentSize } = e.nativeEvent;
-
-                        // Load more items
-                        if (list.length === 0) return;
-
-                        if (contentOffset.y / contentSize.height > 0.5) {
-                            loadmore();
-                        }
+                <List
+                    ref={e => {
+                        if (!e) return;
+                        this.reset = e.state.reset;
                     }}
-                    scrollEventThrottle={16}
-                    onScroll={e => this.toggleHeader(e.nativeEvent)}
-                >
-                    <VideoList
-                        list={list.slice()}
-                        grid={grid}
-                    />
-                </ScrollView>
+                    navigator={this.props.navigator}
+                    list={list.slice()}
+                    loadmore={loadmore}
+                    toggleHeader={(hideHeader) => this.toggleHeader(hideHeader)}
+                    grid={grid}
+                />
             </View>
         );
     }

@@ -2,122 +2,95 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    View,
-    Text,
-    TouchableOpacity,
-    FlatList,
+    ScrollView,
 } from 'react-native';
 
-import classes from './classes';
-import FadeImage from 'ui/FadeImage';
-
-const placeholder = 'https://i.imgur.com/g3dJqEh.png';
+import List from './List';
 
 export default class VideoList extends Component {
     static propTypes = {
         list: PropTypes.array.isRequired,
-        grid: PropTypes.bool.isRequired,
+        grid: PropTypes.bool,
+        toggleHeader: PropTypes.func.isRequired,
+        loadmore: PropTypes.func,
     };
 
     static defaultProps = {
         grid: false,
+        loadmore: Function,
     };
 
-    renderList(item) {
-        return (
-            <TouchableOpacity
-                style={classes.item}
-            >
-                <FadeImage
-                    {...{
-                        showLoading: true,
-                        resizeMode: 'cover',
-                        source: {
-                            uri: item.cover.large || placeholder,
-                        },
-                        style: classes.large,
-                    }}
-                >
-                    <View style={classes.mask} />
-
-                    <View style={classes.hero}>
-                        <Text style={classes.no}>{item.no.toUpperCase()}</Text>
-                        <View style={classes.line} />
-                        <Text
-                            ellipsizeMode="tail"
-                            numberOfLines={2}
-                            style={classes.title}
-                        >
-                            {item.name}
-                        </Text>
-                    </View>
-                </FadeImage>
-            </TouchableOpacity>
-        );
+    // Reset scroll state
+    reset() {
+        // Reset offset Y
+        this.refs.scoller.scrollTo({y: 0, animated: true});
+        this.lastOffsetY = 0;
+        this.props.toggleHeader(false);
     }
 
-    renderGrid(item, index) {
-        return (
-            <TouchableOpacity
-                style={[
-                    classes.gridItem,
-                ]}
-            >
-                <FadeImage
-                    {...{
-                        showLoading: true,
-                        resizeMode: 'cover',
-                        source: {
-                            uri: item.cover.small || placeholder,
-                        },
-                        style: classes.small
-                    }}
-                />
-                <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
-                    style={classes.smallTitle}
-                >
-                    {item.name}
-                </Text>
-            </TouchableOpacity>
-        );
-    }
+    toggleHeader(nativeEvent) {
+        var { contentOffset, layoutMeasurement } = nativeEvent;
 
-    render() {
-        var { list, grid } = this.props;
-
-        if (grid) {
-            return (
-                <FlatList
-                    key="grid"
-                    horizontal={false}
-                    numColumns={3}
-                    style={[
-                        classes.container,
-                    ]}
-                    columnWrapperStyle={classes.grid}
-                    contentContainerStyle={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                    keyExtractor={e => e.id}
-                    data={list}
-                    renderItem={e => this.renderGrid(e.item, e.index)}
-                />
-            );
+        // Show header in first screen
+        if (
+            contentOffset.y < layoutMeasurement.height
+        ) {
+            this.props.toggleHeader(false);
+            return;
         }
 
+        // Scroll down hide header
+        var isDown = contentOffset.y > this.lastOffsetY;
+        var offset = Math.abs(contentOffset.y - this.lastOffsetY);
+
+        // Toggle header
+        if (offset > 10) {
+            // eslint-disable-next-line
+            let hideHeader = isDown ? true : false;
+            // Toggle header, scroll down hide the header, scroll up show the header
+            this.props.toggleHeader(hideHeader);
+        }
+    }
+
+    state = {
+        // Export to parent component
+        reset: this.reset.bind(this),
+    };
+
+    render() {
+        var { list, grid, loadmore } = this.props;
+
         return (
-            <FlatList
-                key="list"
-                style={[
-                    classes.container,
-                ]}
-                keyExtractor={e => e.id}
-                data={list}
-                renderItem={e => this.renderList(e.item)}
-            />
+            <ScrollView
+                ref="scoller"
+                showsVerticalScrollIndicator={false}
+                onScrollEndDrag={e => {
+                    var { contentOffset, contentSize } = e.nativeEvent;
+
+                    // Keep the recent offset
+                    this.lastOffsetY = contentOffset.y;
+
+                    // Load more items
+                    if (list.length === 0) return;
+
+                    if (contentOffset.y / contentSize.height > 0.5) {
+                        loadmore();
+                    }
+                }}
+                scrollEventThrottle={16}
+                onScroll={e => {
+                    var nativeEvent = e.nativeEvent;
+
+                    clearTimeout(this.timer);
+                    this.timer = setTimeout(() => this.toggleHeader(nativeEvent), 33);
+                }}
+            >
+                <List
+                    list={list.slice()}
+                    grid={grid}
+                    navigator={this.props.navigator}
+                />
+            </ScrollView>
         );
     }
 }

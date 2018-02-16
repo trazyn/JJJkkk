@@ -38,7 +38,7 @@ export default class Header extends Component {
                         });
                     }}
                 >
-                    <Text style={classes.title}>{title}</Text>
+                    <Text style={classes.title}>{title.toUpperCase()}</Text>
                 </TouchableOpacity>
 
                 <View style={classes.actions}>

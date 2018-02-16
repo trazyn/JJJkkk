@@ -89,6 +89,7 @@ export default class BestReviews extends Component {
                                 {...{
                                     ...e,
                                     key: index,
+                                    navigator: this.props.navigator,
                                     stars: e.stars.slice(0),
                                     tags: e.tags.slice(0),
                                     reviews: e.reviews.slice(0),

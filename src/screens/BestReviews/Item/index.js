@@ -78,11 +78,24 @@ export default class Item extends Component {
     }
 
     renderStars() {
-        var { stars } = this.props;
+        var { stars, navigator } = this.props;
 
         return stars.slice(0, 3).map((e, index) => {
             return (
-                <TouchableOpacity key={index}>
+                <TouchableOpacity
+                    key={index}
+                    onPress={ev => {
+                        navigator.showModal({
+                            screen: 'zzyzx.ListByStar',
+                            navigatorStyle: {
+                                navBarHidden: true,
+                            },
+                            passProps: {
+                                params: e
+                            }
+                        });
+                    }}
+                >
                     <FadeImage
                         {...{
                             showLoading: true,
@@ -106,13 +119,24 @@ export default class Item extends Component {
     }
 
     renderTags() {
-        var { tags } = this.props;
+        var { tags, navigator } = this.props;
 
         return tags.map((e, index) => {
             return (
                 <TouchableOpacity
                     key={index}
                     style={classes.tag}
+                    onPress={ev => {
+                        navigator.showModal({
+                            screen: 'zzyzx.ListByTag',
+                            navigatorStyle: {
+                                navBarHidden: true,
+                            },
+                            passProps: {
+                                params: e
+                            }
+                        });
+                    }}
                 >
                     <Text style={classes.tagName}>{e.name}</Text>
                 </TouchableOpacity>
@@ -148,6 +172,7 @@ export default class Item extends Component {
 
         return (
             <ScrollView
+                showsVerticalScrollIndicator={false}
                 scrollEventThrottle={16}
                 style={classes.container}
                 onScroll={e => onScroll(e)}
