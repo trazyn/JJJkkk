@@ -55,7 +55,7 @@ export default class Gender extends Component {
                             <Text style={classes.optionText}>Male</Text>
 
                             {
-                                gender === 'M' && (<Icon name="ios-checkmark" size={20} color="#405DE6" />)
+                                gender === 'M' && (<Icon name="ios-checkmark" size={24} color="#405DE6" />)
                             }
                         </View>
                     </TouchableOpacity>
@@ -70,7 +70,7 @@ export default class Gender extends Component {
                             <Text style={classes.optionText}>Female</Text>
 
                             {
-                                gender === 'F' && (<Icon name="ios-checkmark" size={20} color="#405DE6" />)
+                                gender === 'F' && (<Icon name="ios-checkmark" size={24} color="#405DE6" />)
                             }
                         </View>
                     </TouchableOpacity>

@@ -7,6 +7,7 @@ import {
     StatusBar,
 } from 'react-native';
 
+import Loader from 'ui/Loader';
 import BestReviews from './BestReviews';
 import BestRated from './BestRated';
 import LastestVideo from './LastestVideo';
@@ -24,6 +25,9 @@ import EditProfileLocation from './EditProfile/Location';
 import EditProfileBio from './EditProfile/Bio';
 import EditProfileGender from './EditProfile/Gender';
 import EditProfilePassword from './EditProfile/Password';
+import Signin from './Signin';
+import Signup from './Signup';
+import Search from './Search';
 
 @inject(stores => ({
     loading: stores.me.loading,
@@ -38,7 +42,7 @@ class Layout extends Component {
         var { loading } = this.props;
 
         if (loading) {
-            return false;
+            return <Loader show={true} />;
         }
 
         return (
@@ -77,4 +81,7 @@ export default (stores, Provider) => {
     Navigation.registerComponent('zzyzx.EditProfile.Bio', () => Mixin(EditProfileBio), stores, Provider);
     Navigation.registerComponent('zzyzx.EditProfile.Gender', () => Mixin(EditProfileGender), stores, Provider);
     Navigation.registerComponent('zzyzx.EditProfile.Password', () => Mixin(EditProfilePassword), stores, Provider);
+    Navigation.registerComponent('zzyzx.Signin', () => Mixin(Signin), stores, Provider);
+    Navigation.registerComponent('zzyzx.Signup', () => Mixin(Signup), stores, Provider);
+    Navigation.registerComponent('zzyzx.Search', () => Mixin(Search), stores, Provider);
 };

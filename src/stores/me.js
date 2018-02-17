@@ -7,6 +7,7 @@ import api from 'utils/api';
 
 class User {
     @observable loading = false;
+    @observable pending = false;
     @observable data = {};
     @observable favorite = [];
 
@@ -137,6 +138,45 @@ class User {
             await AsyncStorage.removeItem('@AUTH');
             await AsyncStorage.setItem('@AUTH', JSON.stringify(data));
             self.data = data.user;
+            return true;
+        }
+
+        return false;
+    }
+
+    @action async signin(username, password) {
+        self.pending = true;
+
+        var response = await api.post('/signin', {
+            email: username,
+            password,
+        });
+        var data = response.data;
+
+        self.pending = false;
+
+        if (!data.err) {
+            await AsyncStorage.removeItem('@AUTH');
+            await AsyncStorage.setItem('@AUTH', JSON.stringify(data));
+            await self.init();
+            return true;
+        }
+
+        return false;
+    }
+
+    @action async signup(form) {
+        self.pending = true;
+
+        var response = await api.put('/signup', form);
+        var data = response.data;
+
+        self.pending = false;
+
+        if (!data.err) {
+            await AsyncStorage.removeItem('@AUTH');
+            await AsyncStorage.setItem('@AUTH', JSON.stringify(data));
+            await self.init();
             return true;
         }
 

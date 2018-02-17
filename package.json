@@ -8,6 +8,7 @@
     "ios": "react-native run-ios"
   },
   "dependencies": {
+    "@merryjs/photo-viewer": "^2.0.2",
     "axios": "^0.17.1",
     "mobx": "^3.5.1",
     "mobx-react": "^4.4.1",
@@ -16,9 +17,8 @@
     "react": "16.2.0",
     "react-native": "0.52.0",
     "react-native-linear-gradient": "^2.4.0",
-    "react-native-navigation": "^1.1.377",
-    "react-native-vector-icons": "^4.5.0",
-    "react-native-video": "^2.0.0"
+    "react-native-navigation": "^1.1.378",
+    "react-native-vector-icons": "^4.5.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

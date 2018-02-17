@@ -9,6 +9,7 @@ import {
 
 import theme from 'app/theme';
 import classes from './classes';
+import Loader from 'ui/Loader';
 import Header from './Header';
 import Item from './Item';
 
@@ -39,7 +40,7 @@ export default class BestReviews extends Component {
         });
 
         if (loading) {
-            return false;
+            return <Loader show={true} />;
         }
 
         return (

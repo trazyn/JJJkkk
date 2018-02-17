@@ -9,6 +9,7 @@ import detail from './detail';
 import user from './user';
 import me from './me';
 import stars from './stars';
+import search from './search';
 
 export default {
     bestreviews,
@@ -21,4 +22,5 @@ export default {
     user,
     me,
     stars,
+    search,
 };

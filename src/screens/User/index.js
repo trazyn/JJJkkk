@@ -12,6 +12,7 @@ import {
 
 import classes from './classes';
 import humanNumber from 'utils/humanNumber';
+import Loader from 'ui/Loader';
 import FollowButton from './FollowButton';
 import FadeImage from 'ui/FadeImage';
 
@@ -143,7 +144,7 @@ export default class User extends Component {
         var { loading, user, favorite } = this.props;
 
         if (loading) {
-            return false;
+            return <Loader show={true} />;
         }
 
         return (
@@ -186,7 +187,7 @@ export default class User extends Component {
                     }}>
                         <Icon name="ios-pin" size={14} color="#9B9B9B" />
                         <Text style={classes.location}>
-                            {user.location}
+                            {user.location || 'The hell'}
                         </Text>
                     </View>
 

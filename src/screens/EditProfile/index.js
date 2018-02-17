@@ -35,17 +35,16 @@ export default class EditProfile extends Component {
                     showsVerticalScrollIndicator={false}
                 >
                     <View style={classes.changeAvatar}>
-                        <View style={classes.circle}>
-                            <FadeImage
-                                {...{
-                                    resizeMode: 'cover',
-                                    source: {
-                                        uri: avatar,
-                                    },
-                                    style: classes.avatar,
-                                }}
-                            />
-                        </View>
+                        <FadeImage
+                            {...{
+                                resizeMode: 'cover',
+                                source: {
+                                    uri: avatar,
+                                },
+                                containerStyle: classes.circle,
+                                style: classes.avatar,
+                            }}
+                        />
 
                         <Text style={classes.label}>Change your avatar</Text>
                     </View>

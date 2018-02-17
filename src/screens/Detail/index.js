@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { inject, observer } from 'mobx-react/native';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
+import PhotoView from '@merryjs/photo-viewer';
 import {
     ScrollView,
     View,
@@ -12,6 +13,7 @@ import {
 } from 'react-native';
 
 import classes from './classes';
+import Loader from 'ui/Loader';
 import Footer from './Footer';
 import FadeImage from 'ui/FadeImage';
 
@@ -32,7 +34,17 @@ export default class Detail extends Component {
 
     state = {
         showFooter: false,
+        index: 0,
+        showPreview: false,
     };
+
+    togglePreview(showPreview, index = 0) {
+        this.setState({
+            ...this.state,
+            index,
+            showPreview,
+        });
+    }
 
     renderStars(stars) {
         var { navigator } = this.props;
@@ -104,15 +116,19 @@ export default class Detail extends Component {
     renderPreviews(previews) {
         return previews.slice(0, 4).map((e, index) => {
             return (
-                <FadeImage
-                    {...{
-                        key: index,
-                        source: {
-                            uri: e,
-                        },
-                        style: classes.preview,
-                    }}
-                />
+                <TouchableOpacity
+                    key={index}
+                    onPress={e => this.togglePreview(true, index)}
+                >
+                    <FadeImage
+                        {...{
+                            source: {
+                                uri: e.small,
+                            },
+                            style: classes.preview,
+                        }}
+                    />
+                </TouchableOpacity>
             );
         });
     }
@@ -145,23 +161,22 @@ export default class Detail extends Component {
                                 });
                             }}
                         >
-                            <View style={{
-                                height: 32,
-                                width: 32,
-                                borderRadius: 32,
-                                overflow: 'hidden',
-                                marginRight: 10,
-                            }}>
-                                <FadeImage
-                                    {...{
-                                        source: {
-                                            uri: e.avatar
-                                        },
-                                        resizeMode: 'cover',
-                                        style: classes.avatar,
-                                    }}
-                                />
-                            </View>
+                            <FadeImage
+                                {...{
+                                    source: {
+                                        uri: e.avatar
+                                    },
+                                    resizeMode: 'cover',
+                                    style: classes.avatar,
+                                    containerStyle: {
+                                        height: 32,
+                                        width: 32,
+                                        borderRadius: 32,
+                                        overflow: 'hidden',
+                                        marginRight: 10,
+                                    },
+                                }}
+                            />
                             <Text style={classes.commentMetaText}>{e.nickname}</Text>
                         </TouchableOpacity>
 
@@ -184,6 +199,8 @@ export default class Detail extends Component {
 
         return (
             <View style={classes.container}>
+                <Loader show={this.props.loading} />
+
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     scrollEventThrottle={16}
@@ -269,11 +286,14 @@ export default class Detail extends Component {
                                                 this.renderPreviews(previews)
                                             }
                                         </View>
-                                        <TouchableOpacity style={{
-                                            flexDirection: 'row',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                        }}>
+                                        <TouchableOpacity
+                                            style={{
+                                                flexDirection: 'row',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                            }}
+                                            onPress={e => this.togglePreview(true, 0)}
+                                        >
                                             <View style={classes.viewMore}>
                                                 <Text style={classes.viewMoreText}>
                                                     VIEW ALL {previews.length > 9 ? '9+' : previews.length} PHOTOS
@@ -346,6 +366,16 @@ export default class Detail extends Component {
                             }
                         },
                         play: () => {},
+                    }}
+                />
+
+                <PhotoView
+                    visible={this.state.showPreview}
+                    data={previews.map(e => ({ source: { uri: e.large } }))}
+                    hideStatusBar={true}
+                    initial={this.state.index}
+                    onDismiss={e => {
+                        this.togglePreview(false);
                     }}
                 />
             </View>

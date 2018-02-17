@@ -3,17 +3,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Animated } from 'react-native';
 
+import classes from './classes';
 import blacklist from 'utils/blacklist';
 
 export default class FadeImage extends Component {
     static propTypes = {
         showLoading: PropTypes.bool,
-        offset: PropTypes.array,
+        containerStyle: PropTypes.any,
     };
 
     static defaultProps = {
         showLoading: false,
-        offset: [],
     };
 
     state = {
@@ -22,39 +22,28 @@ export default class FadeImage extends Component {
     };
 
     render() {
+        var { containerStyle, style } = this.props;
         var opacity = this.state.opacity;
-        var styles = this.props.style;
-        var offset = this.props.offset;
         var loadingOpacity = opacity.interpolate({
             inputRange: [0, 1],
             outputRange: [1, 0],
         });
 
-        styles = Array.isArray(styles) ? styles : [styles];
+        containerStyle = Array.isArray(containerStyle) ? containerStyle : [containerStyle];
+        style = Array.isArray(style) ? style : [style];
 
         return (
             <View
-                style={[...styles, {
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }]}
-                transform={offset}
+                style={
+                    [classes.container, ...containerStyle]
+                }
             >
                 {
                     (this.props.showLoading && !this.state.loaded) && (
                         <Animated.View
-                            style={[...styles, {
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                backgroundColor: '#fff',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                opacity: loadingOpacity,
-                                shadowRadius: 0,
-                                shadowOpacity: 0,
-                                zIndex: 1,
-                            }]}
+                            style={
+                                [...style, classes.mask, { opacity: loadingOpacity }]
+                            }
                         >
                             <Animated.Image
                                 {...{
@@ -69,11 +58,11 @@ export default class FadeImage extends Component {
                     )
                 }
                 <Animated.Image
-                    {...blacklist(this.props, 'style', 'children', 'offset')}
+                    {...blacklist(this.props, 'showLoading', 'containerStyle', 'style', 'children')}
 
-                    style={[...styles, {
-                        opacity,
-                    }]}
+                    style={
+                        [...style, { opacity }]
+                    }
 
                     onLoadEnd={e => {
                         this.setState({

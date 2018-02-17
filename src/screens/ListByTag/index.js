@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 
 import classes from './classes';
+import Loader from 'ui/Loader';
 import Header from 'components/SmallHeader';
 import List from 'components/VideoList';
 
@@ -41,7 +42,7 @@ export default class ListByTag extends Component {
 
         if (loading
             && list.length === 0) {
-            return false;
+            return <Loader show={true} />;
         }
 
         return (

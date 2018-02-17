@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import classes from './classes';
+import Loader from 'ui/Loader';
 import Header from 'components/Header';
 import List from 'components/VideoList';
 
@@ -48,7 +49,7 @@ export default class MostWanted extends Component {
 
         if (loading
             && list.length === 0) {
-            return false;
+            return <Loader show={true} />;
         }
 
         return (

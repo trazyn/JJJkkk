@@ -29,7 +29,7 @@ class BestRated {
                 self.getList(++index, type, true);
             };
         } else {
-            self.loadmore = Function;
+            self.loadmore = false;
         }
 
         self.loading = false;

@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     ScrollView,
+    Image,
+    View,
 } from 'react-native';
 
 import List from './List';
@@ -12,7 +14,10 @@ export default class VideoList extends Component {
         list: PropTypes.array.isRequired,
         grid: PropTypes.bool,
         toggleHeader: PropTypes.func.isRequired,
-        loadmore: PropTypes.func,
+        loadmore: PropTypes.oneOfType([
+            PropTypes.func,
+            PropTypes.bool,
+        ]),
     };
 
     static defaultProps = {
@@ -73,7 +78,7 @@ export default class VideoList extends Component {
                     // Load more items
                     if (list.length === 0) return;
 
-                    if (contentOffset.y / contentSize.height > 0.5) {
+                    if (loadmore && contentOffset.y / contentSize.height > 0.5) {
                         loadmore();
                     }
                 }}
@@ -90,6 +95,25 @@ export default class VideoList extends Component {
                     grid={grid}
                     navigator={this.props.navigator}
                 />
+
+                {
+                    // Reach the end
+                    loadmore === false && (
+                        <View style={{
+                            paddingBottom: 10,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                            <Image {...{
+                                source: require('images/logo.png'),
+                                style: {
+                                    height: 32,
+                                    width: 32,
+                                },
+                            }} />
+                        </View>
+                    )
+                }
             </ScrollView>
         );
     }

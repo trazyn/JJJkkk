@@ -137,6 +137,7 @@ android {
 }
 
 dependencies {
+    compile project(':@merryjs/photo-viewer')
     compile project(':react-native-navigation')
     compile project(':react-native-video')
     compile project(':react-native-linear-gradient')

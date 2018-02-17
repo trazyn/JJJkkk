@@ -23,7 +23,6 @@ class Detail {
 
         self.data = Object.assign(data, {
             liked: me.isFavorite(data.id),
-            previews: data.previews.map(e => e.large),
             stars: data.stars.map(e => {
                 e.image = e.image || randomeAvatar();
                 return e;

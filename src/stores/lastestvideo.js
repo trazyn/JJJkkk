@@ -5,7 +5,7 @@ import api from 'utils/api';
 class LastestVideo {
     @observable loading = true;
     @observable list = [];
-    @observable type = 'comment';
+    @observable type = 'popular';
     @observable grid = false;
     @observable loadmore;
 
@@ -29,7 +29,7 @@ class LastestVideo {
                 self.getList(++index, type, true);
             };
         } else {
-            self.loadmore = Function;
+            self.loadmore = false;
         }
 
         self.loading = false;

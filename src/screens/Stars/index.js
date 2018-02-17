@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import classes from './classes';
+import Loader from 'ui/Loader';
 import FadeImage from 'ui/FadeImage';
 import HeaderWithBack from 'components/HeaderWithBack';
 
@@ -38,18 +39,17 @@ export default class Stars extends Component {
                     alignItems: 'center',
                     flexDirection: 'row'
                 }}>
-                    <View style={classes.shadow}>
-                        <FadeImage
-                            {...{
-                                showLoading: true,
-                                resizeMode: 'cover',
-                                source: {
-                                    uri: item.avatar,
-                                },
-                                style: classes.avatar
-                            }}
-                        />
-                    </View>
+                    <FadeImage
+                        {...{
+                            showLoading: true,
+                            resizeMode: 'cover',
+                            source: {
+                                uri: item.avatar,
+                            },
+                            style: classes.avatar,
+                            containerStyle: classes.shadow,
+                        }}
+                    />
                     <Text
                         ellipsizeMode="tail"
                         numberOfLines={1}
@@ -78,7 +78,7 @@ export default class Stars extends Component {
         var { loading, list } = this.props;
 
         if (loading) {
-            return false;
+            return <Loader show={true} />;
         }
 
         return (

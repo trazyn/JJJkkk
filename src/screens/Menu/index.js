@@ -5,11 +5,11 @@ import { inject, observer } from 'mobx-react/native';
 import {
     View,
     Text,
-    Image,
     TouchableOpacity,
 } from 'react-native';
 
 import classes from './classes';
+import Image from 'ui/FadeImage';
 
 @inject(stores => ({
     isLogin: stores.me.isLogin,
@@ -43,13 +43,12 @@ export default class Menu extends Component {
                             });
                         }}
                     >
-                        <View style={classes.shadow}>
-                            <Image {...{
-                                resizeMode: 'cover',
-                                source: require('images/most-wanted.jpeg'),
-                                style: classes.small,
-                            }} />
-                        </View>
+                        <Image {...{
+                            resizeMode: 'cover',
+                            source: require('images/most-wanted.jpeg'),
+                            style: classes.small,
+                            containerStyle: classes.shadow,
+                        }} />
 
                         <View style={classes.text}>
                             <Text style={classes.title}># Most wanted</Text>
@@ -68,13 +67,12 @@ export default class Menu extends Component {
                             });
                         }}
                     >
-                        <View style={classes.shadow}>
-                            <Image {...{
-                                resizeMode: 'cover',
-                                source: require('images/best-rated.jpg'),
-                                style: classes.small,
-                            }} />
-                        </View>
+                        <Image {...{
+                            resizeMode: 'cover',
+                            source: require('images/best-rated.jpg'),
+                            style: classes.small,
+                            containerStyle: classes.shadow,
+                        }} />
 
                         <View style={classes.text}>
                             <Text style={classes.title}># Best rated</Text>
@@ -93,13 +91,12 @@ export default class Menu extends Component {
                             });
                         }}
                     >
-                        <View style={classes.shadow}>
-                            <Image {...{
-                                resizeMode: 'cover',
-                                source: require('images/lastest.jpg'),
-                                style: classes.small,
-                            }} />
-                        </View>
+                        <Image {...{
+                            resizeMode: 'cover',
+                            source: require('images/lastest.jpg'),
+                            style: classes.small,
+                            containerStyle: classes.shadow,
+                        }} />
 
                         <View style={classes.text}>
                             <Text style={classes.title}># Lastest</Text>
@@ -118,13 +115,12 @@ export default class Menu extends Component {
                             });
                         }}
                     >
-                        <View style={classes.shadow}>
-                            <Image {...{
-                                resizeMode: 'cover',
-                                source: require('images/porn-stars.jpg'),
-                                style: classes.small,
-                            }} />
-                        </View>
+                        <Image {...{
+                            resizeMode: 'cover',
+                            source: require('images/porn-stars.jpg'),
+                            style: classes.small,
+                            containerStyle: classes.shadow,
+                        }} />
 
                         <View style={classes.text}>
                             <Text style={classes.title}># Pornstar</Text>
@@ -155,20 +151,19 @@ export default class Menu extends Component {
 
                         // Login
                         this.props.navigator.showModal({
-                            screen: 'zzyzx.Login',
+                            screen: 'zzyzx.Signin',
                             navigatorStyle: {
                                 navBarHidden: true,
                             },
                         });
                     }}
                 >
-                    <View style={classes.shadow}>
-                        <Image {...{
-                            resizeMode: 'cover',
-                            source: require('images/profile.png'),
-                            style: classes.large,
-                        }} />
-                    </View>
+                    <Image {...{
+                        resizeMode: 'cover',
+                        source: require('images/profile.png'),
+                        style: classes.large,
+                        containerStyle: classes.shadow,
+                    }} />
 
                     <View style={[
                         classes.text,

@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import classes from './classes';
+import Loader from 'ui/Loader';
 import Header from 'components/Header';
 import List from 'components/VideoList';
 
@@ -57,7 +58,7 @@ export default class LastestVideo extends Component {
 
         if (loading
             && list.length === 0) {
-            return false;
+            return <Loader show={true} />;
         }
 
         return (
@@ -82,6 +83,21 @@ export default class LastestVideo extends Component {
                     />
 
                     <View style={classes.filter}>
+                        <TouchableOpacity
+                            style={[
+                                classes.item,
+                                type === 'popular' && classes.selected
+                            ]}
+                            onPress={e => {
+                                if (type === 'popular') return;
+
+                                this.reset();
+                                this.getList('popular');
+                            }}
+                        >
+                            <Text style={classes.condition}>Popular</Text>
+                        </TouchableOpacity>
+
                         <TouchableOpacity
                             style={[
                                 classes.item,
@@ -110,21 +126,6 @@ export default class LastestVideo extends Component {
                             }}
                         >
                             <Text style={classes.condition}>New Entries</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={[
-                                classes.item,
-                                type === 'entry' && classes.selected
-                            ]}
-                            onPress={e => {
-                                if (type === 'entry') return;
-
-                                this.reset();
-                                this.getList('entry');
-                            }}
-                        >
-                            <Text style={classes.condition}>New Release</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
