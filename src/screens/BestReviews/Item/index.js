@@ -10,6 +10,7 @@ import {
     View,
     Text,
     Image,
+    StatusBar,
     TouchableOpacity,
 } from 'react-native';
 
@@ -25,10 +26,10 @@ export default class Item extends Component {
         text: PropTypes.string.isRequired,
         date: PropTypes.string.isRequired,
         rate: PropTypes.number.isRequired,
-        trailler: PropTypes.object.isRequired,
         stars: PropTypes.array.isRequired,
         tags: PropTypes.array.isRequired,
         reviews: PropTypes.array.isRequired,
+        trailler: PropTypes.object,
     };
 
     state = {
@@ -41,6 +42,8 @@ export default class Item extends Component {
             index,
             showPreview,
         });
+
+        StatusBar.setHidden(true);
     }
 
     renderPreviews() {
@@ -253,34 +256,59 @@ export default class Item extends Component {
                             <Rate rate={rate} />
                         </View>
 
-                        <View style={classes.videoAndPhoto}>
+                        <View
+                            style={[
+                                classes.videoAndPhoto,
+                                // Hide the section when previews and trailler is empty
+                                previews.length === 0 && !trailler && { display: 'none' }
+                            ]}
+                        >
                             <Text style={classes.subheader}>Video and Photo</Text>
-                            <FadeImage
-                                {...{
-                                    resizeMode: 'cover',
-                                    source: {
-                                        uri: trailler.cover || cover,
-                                    },
-                                    style: classes.traillerCover,
-                                }}
-                            >
-                                <TouchableOpacity style={classes.playTrailler}>
-                                    <Icon name="ios-play" size={14} color="#000" />
-                                </TouchableOpacity>
-                            </FadeImage>
+                            {
+                                trailler && (
+                                    <FadeImage
+                                        {...{
+                                            resizeMode: 'cover',
+                                            source: {
+                                                uri: trailler.cover || cover,
+                                            },
+                                            style: classes.traillerCover,
+                                        }}
+                                    >
+                                        <TouchableOpacity
+                                            style={classes.playTrailler}
+                                            onPress={e => this.props.navigator.push({
+                                                screen: 'zzyzx.VideoPlayer',
+                                                navigatorStyle: {
+                                                    navBarHidden: true,
+                                                },
+                                                passProps: {
+                                                    uri: trailler.src,
+                                                },
+                                            })}
+                                        >
+                                            <Icon name="ios-play" size={14} color="#000" />
+                                        </TouchableOpacity>
+                                    </FadeImage>
+                                )
+                            }
                             <View style={classes.previews}>
                                 {
                                     this.renderPreviews()
                                 }
                             </View>
 
-                            <TouchableOpacity
-                                style={classes.watchButton}
-                            >
-                                <Text style={classes.watchText}>
-                                    WATCH NOW
-                                </Text>
-                            </TouchableOpacity>
+                            {
+                                trailler && (
+                                    <TouchableOpacity
+                                        style={classes.watchButton}
+                                    >
+                                        <Text style={classes.watchText}>
+                                            WATCH NOW
+                                        </Text>
+                                    </TouchableOpacity>
+                                )
+                            }
                         </View>
 
                         <View style={{
@@ -325,6 +353,8 @@ export default class Item extends Component {
                 </ScrollView>
 
                 <PhotoView
+                    hideCloseButton={true}
+                    hideShareButton={true}
                     visible={this.state.showPreview}
                     data={previews.map(e => ({ source: { uri: e.large } }))}
                     hideStatusBar={true}

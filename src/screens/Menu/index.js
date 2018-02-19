@@ -36,6 +36,29 @@ export default class Menu extends Component {
                         style={classes.item}
                         onPress={e => {
                             this.props.navigator.resetTo({
+                                screen: 'zzyzx.BestReviews',
+                                navigatorStyle: {
+                                    navBarHidden: true,
+                                },
+                            });
+                        }}
+                    >
+                        <Image {...{
+                            resizeMode: 'cover',
+                            source: require('images/bestreviews.jpg'),
+                            style: classes.small,
+                            containerStyle: classes.shadow,
+                        }} />
+
+                        <View style={classes.text}>
+                            <Text style={classes.title}># Best Reviews</Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={classes.item}
+                        onPress={e => {
+                            this.props.navigator.resetTo({
                                 screen: 'zzyzx.MostWanted',
                                 navigatorStyle: {
                                     navBarHidden: true,

@@ -49,7 +49,7 @@ export default class Header extends Component {
                                     style={classes.wrap}
                                     onPress={e => changeViewMode()}
                                 >
-                                    <Icon style={classes.action} name="md-funnel" size={14} color="#000" />
+                                    <Icon style={classes.action} name="md-funnel" size={16} color="#000" />
                                 </TouchableOpacity>
                             )
                             : (
@@ -57,11 +57,23 @@ export default class Header extends Component {
                                     style={classes.wrap}
                                     onPress={e => changeViewMode()}
                                 >
-                                    <Icon style={classes.action} name="ios-grid-outline" size={14} color="#000" />
+                                    <Icon style={classes.action} name="ios-grid-outline" size={16} color="#000" />
                                 </TouchableOpacity>
                             )
                     }
-                    <Icon style={classes.action} name="ios-search" size={14} color="#000" />
+                    <TouchableOpacity
+                        style={classes.wrap}
+                        onPress={e => {
+                            this.props.navigator.showModal({
+                                screen: 'zzyzx.Search',
+                                navigatorStyle: {
+                                    navBarHidden: true,
+                                },
+                            });
+                        }}
+                    >
+                        <Icon style={classes.action} name="ios-search" size={16} color="#000" />
+                    </TouchableOpacity>
                 </View>
             </View>
         );

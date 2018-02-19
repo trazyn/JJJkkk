@@ -1,4 +1,5 @@
 
+import errorMessage from './errorMessage';
 import bestreviews from './bestreviews';
 import lastestvideo from './lastestvideo';
 import mostwanted from './mostwanted';
@@ -10,6 +11,7 @@ import user from './user';
 import me from './me';
 import stars from './stars';
 import search from './search';
+import comments from './comments';
 
 export default {
     bestreviews,
@@ -23,4 +25,6 @@ export default {
     me,
     stars,
     search,
+    comments,
+    errorMessage,
 };

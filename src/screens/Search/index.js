@@ -55,7 +55,7 @@ export default class Search extends Component {
     }
 
     async search() {
-        var { navigator, recent, search } = this.props;
+        var { navigator, showError, recent, search } = this.props;
         var keywords = this.refs.input._lastNativeText;
         var cached = recent.find(e => e.keywords === keywords);
         var res;
@@ -68,6 +68,7 @@ export default class Search extends Component {
 
                 if (!res) {
                     // Show error message
+                    showError('Nothing be found.');
                     return;
                 }
             }

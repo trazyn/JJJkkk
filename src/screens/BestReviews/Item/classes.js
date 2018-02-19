@@ -100,7 +100,7 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 48,
-        backgroundColor: 'rgba(255, 255, 255, .4)',
+        backgroundColor: 'rgba(255, 255, 255, .7)',
         zIndex: 1,
     },
 
@@ -219,9 +219,5 @@ export default StyleSheet.create({
         paddingBottom: 10,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-
-    hide: {
-        display: 'none',
     },
 });

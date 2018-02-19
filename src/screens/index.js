@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Navigation } from 'react-native-navigation';
 import { inject, observer } from 'mobx-react/native';
+import DropdownAlert from 'react-native-dropdownalert';
 import {
     View,
     StatusBar,
@@ -28,9 +29,15 @@ import EditProfilePassword from './EditProfile/Password';
 import Signin from './Signin';
 import Signup from './Signup';
 import Search from './Search';
+import VideoPlayer from './VideoPlayer';
+import Comments from './Comments';
+import WriteComment from './Comments/Write';
 
 @inject(stores => ({
     loading: stores.me.loading,
+    hasError: stores.errorMessage.hasError,
+    message: stores.errorMessage.message,
+    reset: stores.errorMessage.reset,
 }))
 @observer
 class Layout extends Component {
@@ -38,8 +45,20 @@ class Layout extends Component {
         StatusBar.setHidden(true);
     }
 
+    showError(message) {
+        this.dropdown.alertWithType('custom', 'Error', message);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        var { hasError, message } = nextProps;
+
+        if (hasError) {
+            this.dropdown.alertWithType('custom', 'Error', message);
+        }
+    }
+
     render() {
-        var { loading } = this.props;
+        var { loading, reset } = this.props;
 
         if (loading) {
             return <Loader show={true} />;
@@ -47,7 +66,34 @@ class Layout extends Component {
 
         return (
             <View style={{ flex: 1 }}>
-                {this.props.children}
+                {React.cloneElement(this.props.children, { showError: message => this.showError(message) })}
+
+                <DropdownAlert
+                    closeInterval={3000}
+                    imageStyle={{
+                        display: 'none',
+                    }}
+                    containerStyle={{
+                        padding: 0,
+                        paddingTop: 0,
+                        height: 120,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: '#000',
+                    }}
+                    onClose={() => reset()}
+                    messageStyle={{
+                        color: '#fff',
+                        letterSpacing: 1,
+                        fontWeight: '100',
+                        fontSize: 24,
+                        textAlign: 'center',
+                    }}
+                    titleStyle={{
+                        display: 'none',
+                    }}
+                    ref={ref => (this.dropdown = ref)}
+                />
             </View>
         );
     }
@@ -84,4 +130,7 @@ export default (stores, Provider) => {
     Navigation.registerComponent('zzyzx.Signin', () => Mixin(Signin), stores, Provider);
     Navigation.registerComponent('zzyzx.Signup', () => Mixin(Signup), stores, Provider);
     Navigation.registerComponent('zzyzx.Search', () => Mixin(Search), stores, Provider);
+    Navigation.registerComponent('zzyzx.VideoPlayer', () => Mixin(VideoPlayer), stores, Provider);
+    Navigation.registerComponent('zzyzx.Comments', () => Mixin(Comments), stores, Provider);
+    Navigation.registerComponent('zzyzx.WriteComment', () => Mixin(WriteComment), stores, Provider);
 };

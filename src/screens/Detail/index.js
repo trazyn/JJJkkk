@@ -10,6 +10,7 @@ import {
     View,
     Text,
     TouchableOpacity,
+    StatusBar,
 } from 'react-native';
 
 import classes from './classes';
@@ -44,6 +45,8 @@ export default class Detail extends Component {
             index,
             showPreview,
         });
+
+        StatusBar.setHidden(true);
     }
 
     renderStars(stars) {
@@ -155,7 +158,7 @@ export default class Detail extends Component {
                                     },
                                     passProps: {
                                         params: {
-                                            id: e.id
+                                            id: e.userid,
                                         }
                                     }
                                 });
@@ -261,7 +264,7 @@ export default class Detail extends Component {
                     <View style={classes.body}>
                         <View style={classes.videoAndPhoto}>
                             {
-                                trailler.src && (
+                                trailler && (
                                     <FadeImage
                                         {...{
                                             resizeMode: 'cover',
@@ -271,7 +274,18 @@ export default class Detail extends Component {
                                             style: classes.traillerCover,
                                         }}
                                     >
-                                        <TouchableOpacity style={classes.playTrailler}>
+                                        <TouchableOpacity
+                                            style={classes.playTrailler}
+                                            onPress={e => this.props.navigator.push({
+                                                screen: 'zzyzx.VideoPlayer',
+                                                navigatorStyle: {
+                                                    navBarHidden: true,
+                                                },
+                                                passProps: {
+                                                    uri: trailler.src,
+                                                },
+                                            })}
+                                        >
                                             <Icon name="ios-play" size={14} color="#000" />
                                         </TouchableOpacity>
                                     </FadeImage>
@@ -325,14 +339,30 @@ export default class Detail extends Component {
                             {
                                 this.renderComments(comments)
                             }
-                            <TouchableOpacity style={{
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}>
+                            <TouchableOpacity
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                                onPress={e => {
+                                    console.log('why??', id);
+                                    this.props.navigator.showModal({
+                                        screen: 'zzyzx.Comments',
+                                        navigatorStyle: {
+                                            navBarHidden: true,
+                                        },
+                                        passProps: {
+                                            params: {
+                                                id,
+                                            },
+                                        }
+                                    });
+                                }}
+                            >
                                 <View style={classes.viewMore}>
                                     <Text style={classes.viewMoreText}>
-                                        {comments.length ? 'VIEW ALL COMMENTS' : 'LEAVE A COMMENT'}
+                                        VIEW ALL COMMENTS
                                     </Text>
                                 </View>
                             </TouchableOpacity>
@@ -370,6 +400,8 @@ export default class Detail extends Component {
                 />
 
                 <PhotoView
+                    hideCloseButton={true}
+                    hideShareButton={true}
                     visible={this.state.showPreview}
                     data={previews.map(e => ({ source: { uri: e.large } }))}
                     hideStatusBar={true}
