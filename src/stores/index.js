@@ -12,6 +12,7 @@ import me from './me';
 import stars from './stars';
 import search from './search';
 import comments from './comments';
+import videoPlayer from './videoPlayer';
 
 export default {
     bestreviews,
@@ -27,4 +28,5 @@ export default {
     search,
     comments,
     errorMessage,
+    videoPlayer,
 };

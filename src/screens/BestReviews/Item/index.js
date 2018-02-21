@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 
 import classes from './classes';
+import formatTime from 'utils/formatTime';
 import randomeAvatar from 'utils/randomeAvatar';
 import FadeImage from 'ui/FadeImage';
 import Rate from 'ui/Rate';
@@ -192,7 +193,7 @@ export default class Item extends Component {
     }
 
     render() {
-        var { cover, title, date, rate, text, stars, trailler, previews, onScroll } = this.props;
+        var { no, cover, title, date, length, rate, text, stars, trailler, previews, onScroll } = this.props;
 
         return (
             <View>
@@ -251,7 +252,9 @@ export default class Item extends Component {
                             justifyContent: 'space-between',
                             alignItems: 'center',
                         }}>
-                            <Text style={classes.meta}>{new Date(date).getFullYear()} | 1HOUR 58MIN</Text>
+                            <Text style={classes.meta}>
+                                {new Date(date).getFullYear()} | {formatTime(length)}
+                            </Text>
 
                             <Rate rate={rate} />
                         </View>
@@ -283,7 +286,9 @@ export default class Item extends Component {
                                                     navBarHidden: true,
                                                 },
                                                 passProps: {
-                                                    uri: trailler.src,
+                                                    params: {
+                                                        uri: trailler.src,
+                                                    }
                                                 },
                                             })}
                                         >
@@ -302,6 +307,19 @@ export default class Item extends Component {
                                 trailler && (
                                     <TouchableOpacity
                                         style={classes.watchButton}
+                                        onPress={e => {
+                                            this.props.navigator.push({
+                                                screen: 'zzyzx.VideoPlayer',
+                                                navigatorStyle: {
+                                                    navBarHidden: true,
+                                                },
+                                                passProps: {
+                                                    params: {
+                                                        no
+                                                    }
+                                                },
+                                            });
+                                        }}
                                     >
                                         <Text style={classes.watchText}>
                                             WATCH NOW

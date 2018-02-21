@@ -24,12 +24,12 @@ Checkout the [sketch file](https://github.com/trazyn/JJJkkk/tree/master/resource
 
 ## Libraries/tools
 - es6 syntax and [babel](https://babeljs.io)
-- [Eslint](https://github.com/eslint/eslint) is a tool for identifying and reporting on patterns found in reading application code.
+- [Eslint](https://github.com/eslint/eslint) is a tool for identifying and reporting on patterns found in reading application code
 - [react-native](https://facebook.github.io/react-native) for the iOS
 - [mobx](https://github.com/mobxjs/mobx) to organize the data flow management
-- [react-native-navigation](https://github.com/wix/react-native-navigation) is a complete native navigation solution for React Native, an easy-to-use navigation solution.
-- [photo-viewer](https://github.com/merryjs/photo-viewer) is a photo viewer for react native build on top of NYTPhotoViewer and FrescoImageViewer.
-- [react-native-video-controls](https://github.com/itsnubix/react-native-video-controls) is a React Native video component with controls.
+- [react-native-navigation](https://github.com/wix/react-native-navigation) is a complete native navigation solution for React Native, an easy-to-use navigation solution
+- [photo-viewer](https://github.com/merryjs/photo-viewer) is a photo viewer for react native build on top of NYTPhotoViewer and FrescoImageViewer
+- [react-native-video-controls](https://github.com/itsnubix/react-native-video-controls) is a React Native video component with controls
 
 ## Development
 - A Mac is required
@@ -38,7 +38,7 @@ Checkout the [sketch file](https://github.com/trazyn/JJJkkk/tree/master/resource
    git clone  https://github.com/trazyn/JJJkkk.git
   ```
 - `yarn` to install dependencies
-- `yarn run link` to link react native dependencies.
+- `yarn run link` to link react native dependencies
 - `yarn run ios` to start the packager and run this app in the IOS simulator
 
 ## Donate

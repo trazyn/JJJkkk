@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 
 import classes from './classes';
+import formatTime from 'utils/formatTime';
 import Loader from 'ui/Loader';
 import Footer from './Footer';
 import FadeImage from 'ui/FadeImage';
@@ -198,7 +199,7 @@ export default class Detail extends Component {
     }
 
     render() {
-        var { id, cover, name, no, liked, date, rate, stars, trailler, previews, tags, comments } = this.props.video;
+        var { id, cover, name, no, length, liked, date, rate, stars, trailler, previews, tags, comments } = this.props.video;
 
         return (
             <View style={classes.container}>
@@ -257,7 +258,7 @@ export default class Detail extends Component {
                         <View style={classes.line} />
 
                         <Text style={classes.meta}>
-                            {no} | {new Date(date).getFullYear()} | 1 HOUR 58 MINS
+                            {no} | {new Date(date).getFullYear()} | {formatTime(length)}
                         </Text>
                     </View>
 
@@ -282,7 +283,9 @@ export default class Detail extends Component {
                                                     navBarHidden: true,
                                                 },
                                                 passProps: {
-                                                    uri: trailler.src,
+                                                    params: {
+                                                        uri: trailler.src,
+                                                    }
                                                 },
                                             })}
                                         >
@@ -395,7 +398,24 @@ export default class Detail extends Component {
                                 this.props.video.liked = true;
                             }
                         },
-                        play: () => {},
+                        play: () => {
+                            if (!trailler) {
+                                this.props.showError('Not available.');
+                                return;
+                            }
+
+                            this.props.navigator.push({
+                                screen: 'zzyzx.VideoPlayer',
+                                navigatorStyle: {
+                                    navBarHidden: true,
+                                },
+                                passProps: {
+                                    params: {
+                                        no
+                                    }
+                                },
+                            });
+                        },
                     }}
                 />
 
