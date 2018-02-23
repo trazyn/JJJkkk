@@ -13,8 +13,8 @@
 </p>
 
 <p align="center">
-  <a href="https://david-dm.org/trazyn/JJJkkk"><img src="https://travis-ci.org/trazyn/JJJkkk.svg?branch=master"></a>
-  <a href="https://travis-ci.org/trazyn/JJJkkk"><img src="https://david-dm.org/trazyn/JJJkkk/status.svg"></a>
+  <a href="https://david-dm.org/trazyn/JJJkkk"><img src="https://david-dm.org/trazyn/JJJkkk/status.svg"></a>
+  <a href="https://travis-ci.org/trazyn/JJJkkk"><img src="https://travis-ci.org/trazyn/JJJkkk.svg?branch=master"></a>
 </p>
 
 ## UI
