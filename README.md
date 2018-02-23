@@ -9,12 +9,12 @@
 </h3>
 
 <p align="center">
-  🍭 Japanese adult movie library app, content provider by <a href="http://www.javlibrary.com/">Javlibrary.com</a>
+  🍭 Japanese adult movie library app, content provid by <a href="http://www.javlibrary.com/">Javlibrary.com</a>
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/react-router"><img src="https://travis-ci.org/trazyn/JJJkkk.svg?branch=master"></a>
-  <a href="http://standardjs.com"><img src="https://david-dm.org/trazyn/JJJkkk/status.svg"></a>
+  <a href="https://david-dm.org/trazyn/JJJkkk"><img src="https://travis-ci.org/trazyn/JJJkkk.svg?branch=master"></a>
+  <a href="https://travis-ci.org/trazyn/JJJkkk"><img src="https://david-dm.org/trazyn/JJJkkk/status.svg"></a>
 </p>
 
 ## UI
