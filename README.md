@@ -38,7 +38,7 @@ Checkout the [sketch file](https://github.com/trazyn/JJJkkk/tree/master/resource
    git clone  https://github.com/trazyn/JJJkkk.git
   ```
 - `yarn` to install dependencies
-- `yarn run link` to link react native dependencies
+- `react-native link` to link react native dependencies
 - `yarn run ios` to start the packager and run this app in the IOS simulator
 
 ## Donate
