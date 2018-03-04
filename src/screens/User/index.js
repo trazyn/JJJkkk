@@ -55,7 +55,7 @@ export default class User extends Component {
                             showLoading: true,
                             resizeMode: 'cover',
                             source: {
-                                uri: item.cover,
+                                uri: item.cover.replace(/pl.jpg$/, 'ps.jpg'),
                             },
                             style: [
                                 classes.cover,
@@ -99,7 +99,7 @@ export default class User extends Component {
                         showLoading: true,
                         resizeMode: 'cover',
                         source: {
-                            uri: item.cover,
+                            uri: item.cover.replace(/pl.jpg$/, 'ps.jpg'),
                         },
                         style: classes.cover
                     }}

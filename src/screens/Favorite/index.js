@@ -34,7 +34,7 @@ export default class Favorite extends Component {
                         showLoading: true,
                         resizeMode: 'cover',
                         source: {
-                            uri: item.cover,
+                            uri: item.cover.replace(/pl.jpg$/, 'ps.jpg'),
                         },
                         style: classes.cover
                     }}
