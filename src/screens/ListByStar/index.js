@@ -24,21 +24,22 @@ export default class ListByStar extends Component {
         getList(1, params.id);
     }
 
-    toggleHeader(hideHeader) {
-        if (hideHeader !== this.state.hideHeader) {
-            this.setState({
-                hideHeader,
-            });
-        }
+    renderHeader() {
+        var { params } = this.props;
+
+        return (
+            <View>
+                <Header
+                    title="VIDEO BY"
+                    query={params.name}
+                    navigator={this.props.navigator}
+                />
+            </View>
+        );
     }
 
-    state = {
-        hideHeader: false,
-    };
-
     render() {
-        var { loading, params, list, loadmore } = this.props;
-        var hideHeader = this.state.hideHeader;
+        var { loading, list, loadmore } = this.props;
 
         if (loading
             && list.length === 0) {
@@ -49,29 +50,17 @@ export default class ListByStar extends Component {
             <View
                 style={[
                     classes.container,
-                    !hideHeader && { paddingTop: 68 - 32 },
                 ]}
             >
-                <View style={[
-                    classes.sticky,
-                    hideHeader && { display: 'none' },
-                ]}>
-                    <Header
-                        title="VIDEO BY"
-                        query={params.name}
-                        navigator={this.props.navigator}
-                    />
-                </View>
-
                 <List
-                    ref={e => {
-                        if (!e) return;
-                        this.reset = e.state.reset;
-                    }}
                     navigator={this.props.navigator}
+                    containerStyle={{
+                        paddingTop: 54.5,
+                    }}
+                    headerHeight={54.5}
                     list={list.slice()}
+                    renderHeader={() => this.renderHeader()}
                     loadmore={loadmore}
-                    toggleHeader={(hideHeader) => this.toggleHeader(hideHeader)}
                 />
             </View>
         );

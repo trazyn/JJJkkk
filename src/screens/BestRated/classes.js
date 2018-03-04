@@ -32,15 +32,4 @@ export default StyleSheet.create({
         borderColor: theme.colors.gray,
         borderStyle: 'solid',
     },
-
-    sticky: {
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        width: '100%',
-        padding: 24,
-        paddingTop: 10,
-        backgroundColor: '#fff',
-        zIndex: 1,
-    },
 });

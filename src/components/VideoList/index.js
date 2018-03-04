@@ -1,19 +1,25 @@
 
+/**
+ * React Native collapsible navbar
+ * https://medium.com/appandflow/react-native-collapsible-navbar-e51a049b560a
+ * */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    ScrollView,
     Image,
     View,
+    Animated,
 } from 'react-native';
 
 import List from './List';
 
 export default class VideoList extends Component {
     static propTypes = {
+        renderHeader: PropTypes.func.isRequired,
+        headerHeight: PropTypes.number.isRequired,
         list: PropTypes.array.isRequired,
         grid: PropTypes.bool,
-        toggleHeader: PropTypes.func.isRequired,
         loadmore: PropTypes.oneOfType([
             PropTypes.func,
             PropTypes.bool,
@@ -25,96 +31,169 @@ export default class VideoList extends Component {
         loadmore: Function,
     };
 
-    // Reset scroll state
-    reset() {
-        // Reset offset Y
-        this.refs.scoller.scrollTo({y: 0, animated: true});
-        this.lastOffsetY = 0;
-        this.props.toggleHeader(false);
-    }
-
-    toggleHeader(nativeEvent) {
-        var { contentOffset, layoutMeasurement } = nativeEvent;
-
-        // Show header in first screen
-        if (
-            contentOffset.y < layoutMeasurement.height
-        ) {
-            this.props.toggleHeader(false);
-            return;
-        }
-
-        // Scroll down hide header
-        var isDown = contentOffset.y > this.lastOffsetY;
-        var offset = Math.abs(contentOffset.y - this.lastOffsetY);
-
-        // Toggle header
-        if (offset > 10) {
-            // eslint-disable-next-line
-            let hideHeader = isDown ? true : false;
-            // Toggle header, scroll down hide the header, scroll up show the header
-            this.props.toggleHeader(hideHeader);
+    componentWillReceiveProps(nextProps) {
+        if (this.props.list.length < nextProps.list.length) {
+            this.refs.scoller.scrollTo({y: 0, animated: true});
         }
     }
+
+    scrollAnim = new Animated.Value(0);
+    offsetAnim = new Animated.Value(0);
+
+    _clampedScrollValue = 0;
+    _offsetValue = 0;
+    _scrollValue = 0;
 
     state = {
-        // Export to parent component
-        reset: this.reset.bind(this),
+        // This value used to animate the header
+        clampedScroll: Animated.diffClamp(
+            Animated.add(
+                this.scrollAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, 1],
+                    extrapolateLeft: 'clamp',
+                }),
+                this.offsetAnim,
+            ),
+            0,
+            this.props.headerHeight,
+        ),
+    };
+
+    componentDidMount() {
+        var headerHeight = this.props.headerHeight;
+
+        this.scrollAnim.addListener(({ value }) => {
+            var diff = value - this._scrollValue;
+
+            this._scrollValue = value;
+
+            this._clampedScrollValue = Math.min(
+                Math.max(this._clampedScrollValue + diff, 0),
+                headerHeight,
+            );
+        });
+
+        this.offsetAnim.addListener(({ value }) => {
+            this._offsetValue = value;
+        });
+    }
+
+    componentWillUnmount() {
+        this.scrollAnim.removeAllListeners();
+        this.offsetAnim.removeAllListeners();
+    }
+
+    animate = () => {
+        var headerHeight = this.props.headerHeight;
+        var toValue = (
+            this._scrollValue > headerHeight && this._clampedScrollValue > headerHeight / 2
+                ? this._offsetValue + headerHeight
+                : this._offsetValue - headerHeight
+        );
+
+        Animated.timing(this.offsetAnim, {
+            toValue,
+            duration: 350,
+            useNativeDriver: true,
+        }).start();
     };
 
     render() {
-        var { list, grid, loadmore } = this.props;
+        var { containerStyle, renderHeader, headerHeight, list, grid, loadmore } = this.props;
+        var translateY = this.state.clampedScroll.interpolate({
+            inputRange: [0, headerHeight],
+            outputRange: [0, -headerHeight],
+            extrapolate: 'clamp',
+        });
 
         return (
-            <ScrollView
-                ref="scoller"
-                showsVerticalScrollIndicator={false}
-                onScrollEndDrag={e => {
-                    var { contentOffset, contentSize } = e.nativeEvent;
-
-                    // Keep the recent offset
-                    this.lastOffsetY = contentOffset.y;
-
-                    // Load more items
-                    if (list.length === 0) return;
-
-                    if (loadmore && contentOffset.y / contentSize.height > 0.5) {
-                        loadmore();
-                    }
-                }}
-                scrollEventThrottle={16}
-                onScroll={e => {
-                    var nativeEvent = e.nativeEvent;
-
-                    clearTimeout(this.timer);
-                    this.timer = setTimeout(() => this.toggleHeader(nativeEvent), 33);
-                }}
+            <View
+                style={{ flex: 1 }}
             >
-                <List
-                    list={list.slice()}
-                    grid={grid}
-                    navigator={this.props.navigator}
-                />
+                <Animated.View style={
+                    {
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        width: '100%',
+                        padding: 24,
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                        backgroundColor: '#fff',
+                        zIndex: 1,
+                        borderBottomWidth: 1,
+                        borderColor: 'rgba(0, 0, 0, .1)',
+                        transform: [
+                            {
+                                translateY,
+                            }
+                        ],
+                    }
+                }>
+                    {
+                        renderHeader()
+                    }
+                </Animated.View>
 
-                {
-                    // Reach the end
-                    loadmore === false && (
-                        <View style={{
-                            paddingBottom: 10,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}>
-                            <Image {...{
-                                source: require('images/logo.png'),
-                                style: {
-                                    height: 32,
-                                    width: 32,
-                                },
-                            }} />
-                        </View>
-                    )
-                }
-            </ScrollView>
+                <Animated.ScrollView
+                    ref="scoller"
+                    style={containerStyle}
+                    showsVerticalScrollIndicator={false}
+                    onEndReachedThreshold={.7}
+                    onEndReached={() => loadmore && loadmore()}
+                    onScrollEndDrag={e => {
+                        this._scrollEndTimer = setTimeout(() => this.animate(), 250);
+                    }}
+                    onMomentumScrollBegin={() => {
+                        clearTimeout(this._scrollEndTimer);
+                    }}
+                    onMomentumScrollEnd={() => this.animate()}
+                    scrollEventThrottle={1}
+                    onScroll={
+                        Animated.event(
+                            [
+                                // Scroll to hide header
+                                {
+                                    nativeEvent: {
+                                        contentOffset: {
+                                            y: this.scrollAnim
+                                        }
+                                    }
+                                }
+                            ],
+                            {
+                                useNativeDriver: true,
+                            }
+                        )
+                    }
+                >
+                    <List
+                        list={list.slice()}
+                        grid={grid}
+                        navigator={this.props.navigator}
+                    />
+
+                    {
+                        // Reach the end
+                        loadmore === false && (
+                            <View style={{
+                                paddingBottom: 10,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}>
+                                <Image {...{
+                                    source: require('images/logo.png'),
+                                    style: {
+                                        height: 32,
+                                        width: 32,
+                                    },
+                                }} />
+                            </View>
+                        )
+                    }
+                </Animated.ScrollView>
+            </View>
         );
     }
 }

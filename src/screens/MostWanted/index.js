@@ -31,21 +31,55 @@ export default class MostWanted extends Component {
         this.props.getList(1, type);
     }
 
-    toggleHeader(hideHeader) {
-        if (hideHeader !== this.state.hideHeader) {
-            this.setState({
-                hideHeader,
-            });
-        }
+    renderHeader() {
+        var { type, grid, changeViewMode } = this.props;
+
+        return (
+            <View>
+                <Header
+                    title="MOST WANTED"
+                    navigator={this.props.navigator}
+                    grid={grid}
+                    changeViewMode={e => {
+                        changeViewMode();
+                    }}
+                />
+
+                <View style={classes.filter}>
+                    <TouchableOpacity
+                        style={[
+                            classes.item,
+                            type === 'all' && classes.selected
+                        ]}
+                        onPress={e => {
+                            if (type === 'all') return;
+
+                            this.getList('all');
+                        }}
+                    >
+                        <Text style={classes.condition}>All</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={[
+                            classes.item,
+                            type === 'month' && classes.selected
+                        ]}
+                        onPress={e => {
+                            if (type === 'month') return;
+
+                            this.getList('month');
+                        }}
+                    >
+                        <Text style={classes.condition}>Lastest Month</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
     }
 
-    state = {
-        hideHeader: false,
-    };
-
     render() {
-        var { loading, type, grid, changeViewMode, list, loadmore } = this.props;
-        var hideHeader = this.state.hideHeader;
+        var { loading, grid, list, loadmore } = this.props;
 
         if (loading
             && list.length === 0) {
@@ -56,66 +90,18 @@ export default class MostWanted extends Component {
             <View
                 style={[
                     classes.container,
-                    !hideHeader && { paddingTop: 104 - 32 },
                 ]}
             >
-                <View style={[
-                    classes.sticky,
-                    hideHeader && { display: 'none' },
-                ]}>
-                    <Header
-                        title="MOST WANTED"
-                        navigator={this.props.navigator}
-                        grid={grid}
-                        changeViewMode={e => {
-                            this.reset();
-                            changeViewMode();
-                        }}
-                    />
-
-                    <View style={classes.filter}>
-                        <TouchableOpacity
-                            style={[
-                                classes.item,
-                                type === 'all' && classes.selected
-                            ]}
-                            onPress={e => {
-                                if (type === 'all') return;
-
-                                this.reset();
-                                this.getList('all');
-                            }}
-                        >
-                            <Text style={classes.condition}>All</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={[
-                                classes.item,
-                                type === 'month' && classes.selected
-                            ]}
-                            onPress={e => {
-                                if (type === 'month') return;
-
-                                this.reset();
-                                this.getList('month');
-                            }}
-                        >
-                            <Text style={classes.condition}>Lastest Month</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
                 <List
-                    ref={e => {
-                        if (!e) return;
-                        this.reset = e.state.reset;
-                    }}
                     navigator={this.props.navigator}
+                    containerStyle={{
+                        paddingTop: 112,
+                    }}
+                    headerHeight={47}
                     list={list.slice()}
-                    loadmore={loadmore}
-                    toggleHeader={(hideHeader) => this.toggleHeader(hideHeader)}
+                    renderHeader={() => this.renderHeader()}
                     grid={grid}
+                    loadmore={loadmore}
                 />
             </View>
         );

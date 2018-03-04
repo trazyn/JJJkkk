@@ -31,30 +31,68 @@ export default class LastestVideo extends Component {
         this.props.getList(1, type);
     }
 
-    reset() {
-        // Reset offset Y
-        this.refs.scoller.scrollTo({y: 0, animated: true});
-        this.lastOffsetY = 0;
-        this.setState({
-            hideHeader: false,
-        });
-    }
+    renderHeader() {
+        var { type, grid, changeViewMode } = this.props;
 
-    toggleHeader(hideHeader) {
-        if (hideHeader !== this.state.hideHeader) {
-            this.setState({
-                hideHeader,
-            });
-        }
-    }
+        return (
+            <View>
+                <Header
+                    title="LASTEST VIDEO"
+                    navigator={this.props.navigator}
+                    grid={grid}
+                    changeViewMode={e => {
+                        changeViewMode();
+                    }}
+                />
+                <View style={classes.filter}>
+                    <TouchableOpacity
+                        style={[
+                            classes.item,
+                            type === 'popular' && classes.selected
+                        ]}
+                        onPress={e => {
+                            if (type === 'popular') return;
 
-    state = {
-        hideHeader: false,
-    };
+                            this.getList('popular');
+                        }}
+                    >
+                        <Text style={classes.condition}>Popular</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={[
+                            classes.item,
+                            type === 'comment' && classes.selected
+                        ]}
+                        onPress={e => {
+                            if (type === 'comment') return;
+
+                            this.getList('comment');
+                        }}
+                    >
+                        <Text style={classes.condition}>New Comments</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={[
+                            classes.item,
+                            type === 'release' && classes.selected
+                        ]}
+                        onPress={e => {
+                            if (type === 'release') return;
+
+                            this.getList('release');
+                        }}
+                    >
+                        <Text style={classes.condition}>New Entries</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    }
 
     render() {
-        var { loading, type, grid, changeViewMode, list, loadmore } = this.props;
-        var hideHeader = this.state.hideHeader;
+        var { loading, grid, list, loadmore } = this.props;
 
         if (loading
             && list.length === 0) {
@@ -65,80 +103,17 @@ export default class LastestVideo extends Component {
             <View
                 style={[
                     classes.container,
-                    !hideHeader && { paddingTop: 104 - 32 },
                 ]}
             >
-                <View style={[
-                    classes.sticky,
-                    hideHeader && { display: 'none' },
-                ]}>
-                    <Header
-                        title="LASTEST VIDEO"
-                        navigator={this.props.navigator}
-                        grid={grid}
-                        changeViewMode={e => {
-                            this.reset();
-                            changeViewMode();
-                        }}
-                    />
-
-                    <View style={classes.filter}>
-                        <TouchableOpacity
-                            style={[
-                                classes.item,
-                                type === 'popular' && classes.selected
-                            ]}
-                            onPress={e => {
-                                if (type === 'popular') return;
-
-                                this.reset();
-                                this.getList('popular');
-                            }}
-                        >
-                            <Text style={classes.condition}>Popular</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={[
-                                classes.item,
-                                type === 'comment' && classes.selected
-                            ]}
-                            onPress={e => {
-                                if (type === 'comment') return;
-
-                                this.reset();
-                                this.getList('comment');
-                            }}
-                        >
-                            <Text style={classes.condition}>New Comments</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={[
-                                classes.item,
-                                type === 'release' && classes.selected
-                            ]}
-                            onPress={e => {
-                                if (type === 'release') return;
-
-                                this.reset();
-                                this.getList('release');
-                            }}
-                        >
-                            <Text style={classes.condition}>New Entries</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
                 <List
-                    ref={e => {
-                        if (!e) return;
-                        this.reset = e.state.reset;
-                    }}
                     navigator={this.props.navigator}
+                    containerStyle={{
+                        paddingTop: 112,
+                    }}
+                    headerHeight={47}
                     list={list.slice()}
+                    renderHeader={() => this.renderHeader()}
                     loadmore={loadmore}
-                    toggleHeader={(hideHeader) => this.toggleHeader(hideHeader)}
                     grid={grid}
                 />
             </View>
