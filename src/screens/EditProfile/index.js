@@ -59,6 +59,10 @@ export default class EditProfile extends Component {
                                         }
                                     },
                                     async(response) => {
+                                        if (response.fileSize > 5 * 1024 * 1024) {
+                                            return this.props.showError('Image limit 5M.');
+                                        }
+
                                         this.props.me.avatar = response.uri;
 
                                         if (!(await changeAvatar(response.uri))) {
