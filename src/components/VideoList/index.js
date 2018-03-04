@@ -32,8 +32,9 @@ export default class VideoList extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.list.length < nextProps.list.length) {
-            this.refs.scoller.scrollTo({y: 0, animated: true});
+        if (this.props.list.length > nextProps.list.length
+            && JSON.stringify(this.props.list) !== JSON.stringify(nextProps.list)) {
+            this.refs.scoller._component.scrollTo({y: 0, animated: true});
         }
     }
 
@@ -108,29 +109,38 @@ export default class VideoList extends Component {
         });
 
         return (
-            <View
-                style={{ flex: 1 }}
-            >
-                <Animated.View style={
-                    {
-                        position: 'absolute',
-                        left: 0,
-                        top: 0,
-                        width: '100%',
-                        padding: 24,
-                        paddingTop: 10,
-                        paddingBottom: 10,
-                        backgroundColor: '#fff',
-                        zIndex: 1,
-                        borderBottomWidth: 1,
-                        borderColor: 'rgba(0, 0, 0, .1)',
-                        transform: [
-                            {
-                                translateY,
-                            }
-                        ],
+            <View>
+                <Animated.View
+                    style={
+                        {
+                            position: 'absolute',
+                            left: 0,
+                            top: 0,
+                            width: '100%',
+                            padding: 24,
+                            paddingTop: 10,
+                            paddingBottom: 10,
+                            backgroundColor: '#fff',
+                            zIndex: 1,
+                            borderBottomWidth: 1,
+                            borderColor: 'rgba(0, 0, 0, .1)',
+                            transform: [
+                                {
+                                    translateY,
+                                }
+                            ],
+                        }
                     }
-                }>
+                    onLayout={e => {
+                        var tailer = this.refs.tailer;
+
+                        if (tailer) {
+                            tailer.setNativeProps({
+                                marginBottom: e.nativeEvent.layout.height + 15
+                            });
+                        }
+                    }}
+                >
                     {
                         renderHeader()
                     }
@@ -140,10 +150,17 @@ export default class VideoList extends Component {
                     ref="scoller"
                     style={containerStyle}
                     showsVerticalScrollIndicator={false}
-                    onEndReachedThreshold={.7}
-                    onEndReached={() => loadmore && loadmore()}
                     onScrollEndDrag={e => {
+                        var { contentOffset, contentSize } = e.nativeEvent;
+
                         this._scrollEndTimer = setTimeout(() => this.animate(), 250);
+
+                        // Load more items
+                        if (list.length === 0) return;
+
+                        if (loadmore && contentOffset.y / contentSize.height > 0.5) {
+                            loadmore();
+                        }
                     }}
                     onMomentumScrollBegin={() => {
                         clearTimeout(this._scrollEndTimer);
@@ -183,6 +200,7 @@ export default class VideoList extends Component {
                                 justifyContent: 'center',
                             }}>
                                 <Image {...{
+                                    ref: 'tailer',
                                     source: require('images/logo.png'),
                                     style: {
                                         height: 32,
