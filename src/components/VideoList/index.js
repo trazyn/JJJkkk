@@ -31,13 +31,6 @@ export default class VideoList extends Component {
         loadmore: Function,
     };
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.list.length > nextProps.list.length
-            && JSON.stringify(this.props.list) !== JSON.stringify(nextProps.list)) {
-            this.refs.scoller._component.scrollTo({y: 0, animated: true});
-        }
-    }
-
     scrollAnim = new Animated.Value(0);
     offsetAnim = new Animated.Value(0);
 
@@ -142,7 +135,9 @@ export default class VideoList extends Component {
                     }}
                 >
                     {
-                        renderHeader()
+                        renderHeader(
+                            () => this.refs.scoller._component.scrollTo({y: 0, animated: true})
+                        )
                     }
                 </Animated.View>
 

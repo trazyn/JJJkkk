@@ -31,7 +31,7 @@ export default class LastestVideo extends Component {
         this.props.getList(1, type);
     }
 
-    renderHeader() {
+    renderHeader(gotoTop) {
         var { type, grid, changeViewMode } = this.props;
 
         return (
@@ -53,6 +53,7 @@ export default class LastestVideo extends Component {
                         onPress={e => {
                             if (type === 'popular') return;
 
+                            gotoTop();
                             this.getList('popular');
                         }}
                     >
@@ -67,6 +68,7 @@ export default class LastestVideo extends Component {
                         onPress={e => {
                             if (type === 'comment') return;
 
+                            gotoTop();
                             this.getList('comment');
                         }}
                     >
@@ -81,6 +83,7 @@ export default class LastestVideo extends Component {
                         onPress={e => {
                             if (type === 'release') return;
 
+                            gotoTop();
                             this.getList('release');
                         }}
                     >

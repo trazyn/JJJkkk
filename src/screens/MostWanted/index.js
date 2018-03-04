@@ -31,7 +31,7 @@ export default class MostWanted extends Component {
         this.props.getList(1, type);
     }
 
-    renderHeader() {
+    renderHeader(gotoTop) {
         var { type, grid, changeViewMode } = this.props;
 
         return (
@@ -54,6 +54,7 @@ export default class MostWanted extends Component {
                         onPress={e => {
                             if (type === 'all') return;
 
+                            gotoTop();
                             this.getList('all');
                         }}
                     >
@@ -68,6 +69,7 @@ export default class MostWanted extends Component {
                         onPress={e => {
                             if (type === 'month') return;
 
+                            gotoTop();
                             this.getList('month');
                         }}
                     >
