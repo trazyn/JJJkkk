@@ -5,7 +5,7 @@ import api from 'utils/api';
 class BestRated {
     @observable loading = true;
     @observable list = [];
-    @observable type = 'all';
+    @observable type = 'month';
     @observable grid = false;
     @observable loadmore;
 

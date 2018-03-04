@@ -115,7 +115,7 @@ export default class LastestVideo extends Component {
                     }}
                     headerHeight={47}
                     list={list.slice()}
-                    renderHeader={() => this.renderHeader()}
+                    renderHeader={(gotoTop) => this.renderHeader(gotoTop)}
                     loadmore={loadmore}
                     grid={grid}
                 />

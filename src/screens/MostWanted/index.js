@@ -49,21 +49,6 @@ export default class MostWanted extends Component {
                     <TouchableOpacity
                         style={[
                             classes.item,
-                            type === 'all' && classes.selected
-                        ]}
-                        onPress={e => {
-                            if (type === 'all') return;
-
-                            gotoTop();
-                            this.getList('all');
-                        }}
-                    >
-                        <Text style={classes.condition}>All</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={[
-                            classes.item,
                             type === 'month' && classes.selected
                         ]}
                         onPress={e => {
@@ -74,6 +59,21 @@ export default class MostWanted extends Component {
                         }}
                     >
                         <Text style={classes.condition}>Lastest Month</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={[
+                            classes.item,
+                            type === 'all' && classes.selected
+                        ]}
+                        onPress={e => {
+                            if (type === 'all') return;
+
+                            gotoTop();
+                            this.getList('all');
+                        }}
+                    >
+                        <Text style={classes.condition}>All</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -101,7 +101,7 @@ export default class MostWanted extends Component {
                     }}
                     headerHeight={47}
                     list={list.slice()}
-                    renderHeader={() => this.renderHeader()}
+                    renderHeader={(gotoTop) => this.renderHeader(gotoTop)}
                     grid={grid}
                     loadmore={loadmore}
                 />
