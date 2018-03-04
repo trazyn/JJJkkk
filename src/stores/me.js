@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { observable, action } from 'mobx';
 import { AsyncStorage } from 'react-native';
+import RNFS from 'react-native-fs';
 
 import api from 'utils/api';
 
@@ -195,6 +196,31 @@ class User {
         }
 
         return false;
+    }
+
+    @action async changeAvatar(image) {
+        var base64 = await RNFS.readFile(image, 'base64');
+        var response = await axios.post(
+            'https://api.imgur.com/3/image',
+            {
+                image: base64,
+                type: 'base64',
+            },
+            {
+                headers: {
+                    'Authorization': 'Client-ID 8bd79a8c0b6429e',
+                },
+            }
+        );
+        var success = response.data.success;
+
+        if (success) {
+            self.update({
+                avatar: response.data.data.link
+            });
+        }
+
+        return success;
     }
 
     isFavorite(jav) {

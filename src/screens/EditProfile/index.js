@@ -7,6 +7,7 @@ import {
     ScrollView,
     TouchableOpacity,
 } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 
 import classes from './classes';
 import FadeImage from 'ui/FadeImage';
@@ -14,12 +15,13 @@ import HeaderWithBack from 'components/HeaderWithBack';
 
 @inject(stores => ({
     me: stores.me.data,
+    changeAvatar: stores.me.changeAvatar,
     logout: stores.me.logout,
 }))
 @observer
 export default class EditProfile extends Component {
     render() {
-        var { navigator, logout } = this.props;
+        var { navigator, logout, changeAvatar } = this.props;
         var { avatar, nickname, location, gender, bio } = this.props.me;
 
         return (
@@ -46,7 +48,28 @@ export default class EditProfile extends Component {
                             }}
                         />
 
-                        <Text style={classes.label}>Change your avatar</Text>
+                        <TouchableOpacity
+                            onPress={e => {
+                                ImagePicker.showImagePicker(
+                                    {
+                                        title: 'Select Avatar',
+                                        storageOptions: {
+                                            skipBackup: true,
+                                            path: 'images'
+                                        }
+                                    },
+                                    async(response) => {
+                                        this.props.me.avatar = response.uri;
+
+                                        if (!(await changeAvatar(response.uri))) {
+                                            this.props.showError('Failed to change avatar.');
+                                        }
+                                    }
+                                );
+                            }}
+                        >
+                            <Text style={classes.label}>Change your avatar</Text>
+                        </TouchableOpacity>
                     </View>
 
                     <View style={classes.field}>

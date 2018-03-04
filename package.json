@@ -18,6 +18,8 @@
     "react": "16.2.0",
     "react-native": "0.52.0",
     "react-native-dropdownalert": "^3.3.0",
+    "react-native-fs": "^2.9.11",
+    "react-native-image-picker": "^0.26.7",
     "react-native-linear-gradient": "^2.4.0",
     "react-native-navigation": "^1.1.378",
     "react-native-orientation": "^3.1.3",
