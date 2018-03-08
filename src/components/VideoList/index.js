@@ -116,7 +116,8 @@ export default class VideoList extends Component {
                             backgroundColor: '#fff',
                             zIndex: 1,
                             borderBottomWidth: 1,
-                            borderColor: 'rgba(0, 0, 0, .1)',
+                            borderColor: 'rgba(0, 0, 0, .3)',
+                            opacity: .8,
                             transform: [
                                 {
                                     translateY,
