@@ -35,7 +35,7 @@ export default StyleSheet.create({
     },
 
     item: {
-        marginBottom: 24,
+        marginBottom: 0,
     },
 
     large: {
