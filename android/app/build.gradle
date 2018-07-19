@@ -137,6 +137,7 @@ android {
 }
 
 dependencies {
+    compile project(':@merryjs_photo-viewer')
     compile project(':react-native-fs')
     compile project(':react-native-image-to-base64')
     compile project(':react-native-image-picker')

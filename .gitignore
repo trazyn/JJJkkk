@@ -24,13 +24,13 @@ xcuserdata
 *.moved-aside
 DerivedData
 *.hmap
-*.ipa
 *.xcuserstate
 project.xcworkspace
 *.mobileprovision
 *.p12
 *.pbxproj
 ios/fastlane/*
+ios/ipas/*
 
 # Android/IntelliJ
 #

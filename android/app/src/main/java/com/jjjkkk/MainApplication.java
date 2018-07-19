@@ -3,6 +3,7 @@ package com.jjjkkk;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.merryjs.PhotoViewer.MerryPhotoViewPackage;
 import com.rnfs.RNFSPackage;
 import com.github.xfumihiro.react_native_image_to_base64.ImageToBase64Package;
 import com.imagepicker.ImagePickerPackage;
@@ -32,6 +33,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new MerryPhotoViewPackage(),
             new RNFSPackage(),
             new ImageToBase64Package(),
             new ImagePickerPackage(),
