@@ -1,7 +1,6 @@
 
-dist/*
+node_modules/*
 __tests__/*
 src/assets/*
-server/api/*
-NeteaseCloudMusicApi/*
-
+ios/*
+android/*

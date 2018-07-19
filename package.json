@@ -6,7 +6,8 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "lint": "node node_modules/.bin/eslint .",
     "test": "jest",
-    "ios": "react-native run-ios"
+    "ios": "react-native run-ios",
+    "package": "cd ios && sh ./package.sh"
   },
   "dependencies": {
     "@merryjs/photo-viewer": "^2.0.2",

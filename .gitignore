@@ -6,7 +6,7 @@
 #
 dist/
 release/
-package-lock.json
+*-lock.json
 
 # Xcode
 #
@@ -27,6 +27,10 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+*.mobileprovision
+*.p12
+*.pbxproj
+ios/fastlane/*
 
 # Android/IntelliJ
 #
