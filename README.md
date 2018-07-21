@@ -41,6 +41,9 @@ Checkout the [sketch file](https://github.com/trazyn/JJJkkk/tree/master/resource
 - `react-native link` to link react native dependencies
 - `yarn run ios` to start the packager and run this app in the IOS simulator
 
+## Related projects
+[ken113/javlibrary-api](https://github.com/ken113/javlibrary-api)
+
 ## Donate
 - BTC wallet address: `1KXKwNHCqmxf1rAV533hcZ49zko3GksKR1`
 - ETC wallet address: `0xb5cfdcb28ff387c52c3259114414c993006a2b4f`
