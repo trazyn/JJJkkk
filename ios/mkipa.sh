@@ -1,13 +1,12 @@
 #!/bin/bash
 
-APP_VERSION=$(cat package.json \
+app_product_name='JJJkkk'
+app_version=$(cat package.json \
   | grep version \
   | head -1 \
   | awk -F: '{ print $2 }' \
   | sed 's/[",]//g')
+app_bundle_id='gh.trazyn.jjjkkk'
+ipa_name="${app_product_name}_${app_version}"
 
-APP_PRODUCT_NAME='JJJkkk'
-APP_BUNDLE_ID='gh.trazyn.jjjkkk'
-IPA_NAME='${APP_PRODUCT_NAME}_${APP_VERSION}'
-
-fastlane ios enterprise bundle_identifier:$APP_BUNDLE_ID output_name:$IPA_NAME
+fastlane ios enterprise bundle_identifier:$app_bundle_id output_name:$ipa_name
